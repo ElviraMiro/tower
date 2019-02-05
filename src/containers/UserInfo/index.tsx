@@ -166,7 +166,6 @@ class UserInfoScreen extends React.Component<Props, UserInfoState> {
         };
 
         this.props.addNewLabel(requestProps);
-        this.props.getUserData({uid: this.props.match.params.uid});
         this.changeNameForNewLabel('');
         this.changeValueForNewLabel('');
     };
@@ -183,7 +182,6 @@ class UserInfoScreen extends React.Component<Props, UserInfoState> {
         };
 
         this.props.editLabel(requestProps);
-        this.props.getUserData({uid: this.props.match.params.uid});
         this.changeNameForNewLabel('');
         this.changeValueForNewLabel('');
     };
@@ -192,19 +190,16 @@ class UserInfoScreen extends React.Component<Props, UserInfoState> {
     private changeState = (value: string) => {
         const { uid } = this.props.userData;
         this.props.changeUserState({uid: uid, state: value});
-        this.props.getUserData({uid: this.props.match.params.uid});
     };
 
     private changeRole = (value: string) => {
         const { uid } = this.props.userData;
         this.props.changeUserRole({uid: uid, role: value});
-        this.props.getUserData({uid: this.props.match.params.uid});
     };
 
     private changeOTP = (value: boolean) => {
         const { uid } = this.props.userData;
         this.props.changeUserOTP({uid: uid, otp: value});
-        this.props.getUserData({uid: this.props.match.params.uid});
     };
 }
 
