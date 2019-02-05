@@ -39,7 +39,9 @@ interface OwnProps {
     password: string;
     handleChangeEmail: (email: string) => void;
     handleChangePassword: (password: string) => void;
+    handleOTPCode: (otp_code: string) => void;
     handleSignIn: () => void;
+    require2FA?: boolean;
 }
 
 type Props = StyleProps & OwnProps;
@@ -50,6 +52,7 @@ class LoginComponent extends React.Component<Props> {
             classes,
             email,
             password,
+            require2FA,
         } = this.props;
 
         return (
@@ -83,6 +86,15 @@ class LoginComponent extends React.Component<Props> {
                             autoComplete="current-password"
                         />
                     </FormControl>
+                    { require2FA ? (<FormControl margin="normal" required fullWidth style={{ color: "#3598D5" }}>
+                        <InputLabel htmlFor="otp_code" style={{ color: "#3598D5" }}>OTP code</InputLabel>
+                        <Input
+                            id="otp_code"
+                            name="otp_code"
+                            onChange={this.handleOTPCode}
+                            autoFocus
+                        />
+                    </FormControl>) : null }
                     <Button
                         type="button"
                         onClick={this.signIn}
@@ -103,6 +115,10 @@ class LoginComponent extends React.Component<Props> {
 
     private handlePassword = (e: any) => {
         this.props.handleChangePassword(e);
+    };
+
+    private handleOTPCode = (e: any) => {
+        this.props.handleOTPCode(e);
     };
 
     private signIn = () => {

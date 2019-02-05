@@ -17,11 +17,9 @@ import {
     changeUserRole,
     changeUserOTP,
     deleteLabel,
-    getCurrentUser,
     getUserData,
     logout,
     selectUserData,
-    UserInterface,
 } from '../../modules';
 
 interface ReduxProps {

@@ -5,6 +5,7 @@ import {
     LOGIN_FAILURE,
     LOGOUT_FETCH,
     LOGOUT_FAILURE,
+    SIGN_IN_REQUIRE_2FA,
 } from '../constants';
 
 interface UserDataInterface {
@@ -19,6 +20,7 @@ interface UserDataInterface {
 export interface AuthState {
     user: UserDataInterface;
     error?: string;
+    require2FA?: boolean;
 }
 
 type AuthAction = LoginAction | LogoutAction;
@@ -48,6 +50,11 @@ export const authReducer = (state = {}, action: AuthAction) => {
                 ...state,
                 error: action.payload.message,
             };
+        case SIGN_IN_REQUIRE_2FA:
+            return {
+                ...state,
+                require2FA: action.payload.require2fa,
+            }
         default:
             return {
                 ...state,

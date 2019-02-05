@@ -2,6 +2,7 @@ import {
     LOGIN_DATA,
     LOGIN_FETCH,
     LOGIN_FAILURE,
+    SIGN_IN_REQUIRE_2FA,
 } from '../constants';
 
 interface UserDataInterface {
@@ -23,6 +24,7 @@ export interface LoginFetch {
     payload: {
         email: string,
         password: string,
+        otp_code?: string,
     };
 }
 
@@ -36,7 +38,14 @@ export interface LoginFailed {
     payload: LoginError,
 }
 
-export type LoginAction = LoginFetch | LoginFailed | LoginData;
+export interface SignInRequire2FA {
+    type: typeof SIGN_IN_REQUIRE_2FA;
+    payload: {
+        require2fa: boolean;
+    };
+}
+
+export type LoginAction = LoginFetch | LoginFailed | LoginData | SignInRequire2FA;
 
 export const login = (payload: LoginFetch['payload']): LoginFetch => ({
     type: LOGIN_FETCH,
@@ -50,5 +59,10 @@ export const loginError = (payload: LoginFailed['payload']): LoginFailed => ({
 
 export const loginData = (payload: LoginData['payload']): LoginData => ({
     type: LOGIN_DATA,
+    payload,
+});
+
+export const signInRequire2FA = (payload: SignInRequire2FA['payload']): SignInRequire2FA => ({
+    type: SIGN_IN_REQUIRE_2FA,
     payload,
 });

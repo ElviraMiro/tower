@@ -68,7 +68,7 @@ const formatError = (responseError: AxiosError) => {
     const response = responseError.response || defaultResponse;
     return {
         code: response.status,
-        message: response.statusText,
+        message: response.data.error ? response.data.error : response.statusText,
     };
 };
 

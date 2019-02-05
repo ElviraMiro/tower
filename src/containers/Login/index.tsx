@@ -14,7 +14,9 @@ import {
 } from 'react-redux';
 import { LoginBox } from '../../components';
 import {
+    AppState,
     login,
+    selectSignInRequire2FA,
 } from '../../modules';
 
 const styles = (theme: Theme) => createStyles({
@@ -42,16 +44,21 @@ interface StyleProps extends WithStyles<typeof styles> {
     theme: Theme;
 }
 
+interface ReduxProps {
+    require2fa?: boolean;
+}
+
 interface LoginState {
     email: string;
     password: string;
+    otp_code: string;
 }
 
 interface DispatchProps {
     login: typeof login;
 }
 
-type Props = StyleProps & DispatchProps;
+type Props = StyleProps & ReduxProps & DispatchProps;
 
 class LoginScreen extends React.Component<Props, LoginState> {
     constructor(props: Props) {
@@ -60,12 +67,14 @@ class LoginScreen extends React.Component<Props, LoginState> {
         this.state = {
             email: '',
             password: '',
+            otp_code: '',
         };
     }
 
     public render() {
         const { classes } = this.props;
         const { email, password } = this.state;
+        const require2FA = this.props.require2fa;
 
         return (
             <main className={classes.main}>
@@ -76,7 +85,9 @@ class LoginScreen extends React.Component<Props, LoginState> {
                         password={password}
                         handleChangeEmail={this.handleChangeEmailValue}
                         handleChangePassword={this.handleChangePasswordValue}
+                        handleOTPCode={this.handleChangeOTPCodeValue}
                         handleSignIn={this.signIn}
+                        require2FA={require2FA}
                     />
                 </Paper>
             </main>
@@ -95,15 +106,26 @@ class LoginScreen extends React.Component<Props, LoginState> {
         });
     };
 
+    private handleChangeOTPCodeValue = (e: any) => {
+        this.setState({
+            otp_code: e.target.value,
+        });
+    };
+
     private signIn = () => {
-        const { email, password } = this.state;
-        this.props.login({email, password});
+        const { email, password, otp_code } = this.state;
+        this.props.login({email, password, otp_code});
     };
 }
+
+const mapStateToProps: MapStateToProps<ReduxProps, {}, AppState> =
+    (state: AppState): ReduxProps => ({
+        require2fa: selectSignInRequire2FA(state),
+    });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =
     dispatch => ({
         login: payload => dispatch(login(payload)),
     });
 
-export const Login = connect(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(LoginScreen));
+export const Login = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(LoginScreen));
