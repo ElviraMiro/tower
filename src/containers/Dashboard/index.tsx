@@ -61,10 +61,13 @@ class DashboardScreen extends React.Component<Props, State> {
             { key: 'role', alignRight: true, label: 'Role' },
             { key: 'uid', alignRight: true, label: 'UID' },
         ];
+        const hiddenStyle = "none";
 
         return (
             <Layout logout={this.userLogout}>
-                <OrderChart />
+                <div style={{display: hiddenStyle}}>
+                    <OrderChart />
+                </div>
                 {users ? <EnchancedTable rows={usersRows} data={users}/> : null}
             </Layout>
         );

@@ -17,6 +17,7 @@ import {
     WithStyles,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AccountIcon from '@material-ui/icons/AccountBox';
@@ -115,6 +116,7 @@ class NavBar extends React.Component<Props, NavbarState> {
     render() {
         const { classes, theme } = this.props;
         const { open } = this.state;
+        const hiddenStyle = "none";
 
         return (
             <div>
@@ -126,15 +128,23 @@ class NavBar extends React.Component<Props, NavbarState> {
                 >
                     <Toolbar disableGutters={!open}>
                         <IconButton
-                          color="inherit"
-                          aria-label="Open drawer"
-                          onClick={this.handleDrawerOpen}
-                          className={classNames(classes.menuButton, {
-                            [classes.hide]: open,
-                          })}
-                        >
-                            <MenuIcon />
+                            color="inherit"
+                            href="/tower"
+                            >
+                            <HomeIcon />
                         </IconButton>
+                        <div style={{display: hiddenStyle}}>
+                            <IconButton
+                            color="inherit"
+                            aria-label="Open drawer"
+                            onClick={this.handleDrawerOpen}
+                            className={classNames(classes.menuButton, {
+                                [classes.hide]: open,
+                            })}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                        </div>
                         <Typography variant="h6" color="inherit" className={classes.grow} onClick={this.goToDashboard}>
                             Control Tower
                         </Typography>
@@ -143,45 +153,47 @@ class NavBar extends React.Component<Props, NavbarState> {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <Drawer
-                    variant="permanent"
-                    className={classNames(classes.drawer, {
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open,
-                    })}
-                    classes={{
-                        paper: classNames({
+                <div style={{display: hiddenStyle}}>
+                    <Drawer
+                        variant="permanent"
+                        className={classNames(classes.drawer, {
                             [classes.drawerOpen]: open,
                             [classes.drawerClose]: !open,
-                        }),
-                    }}
-                    open={open}
-                >
-                    <div className={classes.toolbar}>
-                        <IconButton onClick={this.handleDrawerClose}>
-                            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <List>
-                        {menuItems.map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>
-                                    {
-                                        index === 0 ? <AccountIcon />
-                                        : index === 1 ? <DashboardIcon />
-                                        : index === 2 ? <CurrencyIcon/>
-                                        : index === 3 ? <ChartIcon/>
-                                        : index === 4 ? <CheckedIcon/>
-                                        : index === 5 ? <UpIcon/>
-                                        : <DownIcon/>
-                                    }
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Drawer>
+                        })}
+                        classes={{
+                            paper: classNames({
+                                [classes.drawerOpen]: open,
+                                [classes.drawerClose]: !open,
+                            }),
+                        }}
+                        open={open}
+                    >
+                        <div className={classes.toolbar}>
+                            <IconButton onClick={this.handleDrawerClose}>
+                                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <List>
+                            {menuItems.map((text, index) => (
+                                <ListItem button key={text}>
+                                    <ListItemIcon>
+                                        {
+                                            index === 0 ? <AccountIcon />
+                                            : index === 1 ? <DashboardIcon />
+                                            : index === 2 ? <CurrencyIcon/>
+                                            : index === 3 ? <ChartIcon/>
+                                            : index === 4 ? <CheckedIcon/>
+                                            : index === 5 ? <UpIcon/>
+                                            : <DownIcon/>
+                                        }
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Drawer>
+                </div>
             </div>
         );
     }
