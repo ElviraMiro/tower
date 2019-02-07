@@ -1,41 +1,71 @@
 import React from 'react';
+import classNames from 'classnames';
+import CloseIcon from '@material-ui/icons/Close';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import InfoIcon from '@material-ui/icons/Info';
+import green from '@material-ui/core/colors/green';
+import amber from '@material-ui/core/colors/amber';
 import {
   createStyles,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
+  IconButton,
   Theme,
-  Slide,
+  Snackbar,
   WithStyles,
   withStyles,
 } from '@material-ui/core';
 
 const styles = (theme: Theme) => createStyles({
-  avatar: {
-      margin: theme.spacing.unit,
-      backgroundColor: theme.palette.secondary.main,
+  success: {
+    backgroundColor: green[600],
   },
-  form: {
-      width: '100%',
-      marginTop: theme.spacing.unit,
+  error: {
+    backgroundColor: theme.palette.error.dark,
   },
-  submit: {
-      marginTop: theme.spacing.unit * 3,
-      backgroundColor: "#3598D5",
-      color: "#ffffff",
+  info: {
+    backgroundColor: theme.palette.primary.dark,
+  },
+  warning: {
+    backgroundColor: amber[700],
+  },
+  icon: {
+    fontSize: 20,
+    marginRight: theme.spacing.unit,
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
   },
 });
 
-function Transition(props: any) {
-  return <Slide direction="down" {...props} />;
+function IconContent(type: string, className: string) {
+  switch (type) {
+    case 'error':
+      return <InfoIcon className={className}/>
+    case 'info':
+      return <ErrorIcon className={className} />
+    case 'warning':
+      return <InfoIcon className={className} />
+    case 'success':
+      return <CheckCircleIcon className={className} />
+    default:
+      return null;
+  }
 }
 
-function Title(props: any) {
-  return (
-    <DialogTitle id="alert-dialog-slide-title">
-      {props.title}
-    </DialogTitle>)
+function getClassName(classes: any, type: string) {
+  switch (type) {
+    case 'error':
+      return classes.error;
+    case 'info':
+      return classes.info;
+    case 'warning':
+      return classes.warning;
+    case 'success':
+      return classes.success;
+    default:
+      return '';
+  }
 }
 
 interface StyleProps extends WithStyles<typeof styles> {
@@ -43,10 +73,10 @@ interface StyleProps extends WithStyles<typeof styles> {
 }
 
 interface OwnProps {
-  title?: string;
   contentText?: string;
   timeout?: number;
   showDialog: boolean;
+  type: string;
 }
 
 type Props = StyleProps & OwnProps;
@@ -57,12 +87,8 @@ class MessageAlertComponent extends React.Component<Props> {
   };
 
   componentWillReceiveProps(next: Props) {
-    if (next.showDialog) {
-      const timeout = next.timeout ? next.timeout : 1000;
+    if (next.showDialog && (!this.props.showDialog)) {
       this.setState({open: true});
-      setTimeout(() => {
-        this.setState({ open: false });
-      }, timeout);
     }
   }
 
@@ -71,25 +97,37 @@ class MessageAlertComponent extends React.Component<Props> {
   };
 
   render() {
-    const { contentText, title } = this.props;
+    const { classes, type } = this.props;
+    const contentText = this.props.contentText ? this.props.contentText : '';
+    const timeout = this.props.timeout ? this.props.timeout : 2000;
+    const className = getClassName(classes, type);
     return (
-      <div>
-        <Dialog
-          open={this.state.open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          {title ? Title(this.props) : null}
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              {contentText}
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
-      </div>
+      <Snackbar
+        className={className}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={this.state.open}
+        autoHideDuration={timeout}
+        onClose={this.handleClose}
+        ContentProps={{
+          'aria-describedby': 'message-id',
+          'className': className,
+        }}
+        message={<span className={classes.message}>{IconContent(type, classes.icon)} {contentText}</span>}
+        action={[
+          <IconButton
+            key="close"
+            aria-label="Close"
+            color="inherit"
+            className="close"
+            onClick={this.handleClose}
+          >
+            <CloseIcon className="icon" />
+          </IconButton>,
+        ]}
+      />
     );
   }
 }

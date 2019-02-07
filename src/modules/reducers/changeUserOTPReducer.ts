@@ -19,6 +19,7 @@ export const changeUserOTPReducer = (OTP = initial, action: ChangeUserOTPAction)
           return {
               ...OTP,
               OTPChanged: true,
+              error: undefined,
           };
       case CHANGE_USER_OTP_ERROR:
           return {

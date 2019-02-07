@@ -19,6 +19,7 @@ export const changeUserStateReducer = (state = initial, action: ChangeUserStateA
           return {
               ...state,
               stateChanged: true,
+              error: undefined,
           };
       case CHANGE_USER_STATE_ERROR:
           return {

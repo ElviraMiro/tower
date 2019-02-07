@@ -19,6 +19,7 @@ export const addNewLabelReducer = (state = initial, action: AddNewLabelAction) =
           return {
               ...state,
               labelAdded: true,
+              error: undefined,
           };
       case ADD_USER_LABEL_ERROR:
           return {

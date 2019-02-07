@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import React from "react";
-import { EditLabel, EnchancedTable } from '../';
+import { EditLabel, EnchancedTable, MessageAlert } from '../';
 import {
     convertToUTCTime,
     findPhone,
@@ -113,6 +113,7 @@ class UserDataComponent extends React.Component<Props> {
         role: this.props.user.role,
         otp: this.props.user.otp,
         showMore: false,
+        showMessage: false,
     };
 
     public render() {
@@ -345,6 +346,11 @@ class UserDataComponent extends React.Component<Props> {
                         </Typography>
                     </Grid>
                 </Grid>
+                <MessageAlert
+                    type="error"
+                    showDialog={this.state.showMessage}
+                    contentText="2FA can only be enabled by the user"
+                />
             </div>
         );
     }
@@ -492,8 +498,11 @@ class UserDataComponent extends React.Component<Props> {
             this.props.changeOTP(e.target.checked);
             this.setState({otp: e.target.checked});
         } else {
-            alert('2FA can only be enabled by the user');
-        }
+            this.setState({showMessage: true});
+            setTimeout(() => {
+                this.setState({showMessage: false});
+            }, 2000);
+        };
     };
 
     private showMoreUserInfo = (e: any) => {
