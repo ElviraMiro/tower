@@ -13,8 +13,8 @@ export function* loginSaga(action: LoginFetch) {
             yield put(logout());
         }
     } catch (error) {
-        const responseStatus = error.message;
-        const is2FAEnabled = responseStatus === 'The account has enabled 2FA but OTP code is missing';
+        const responseStatus = error.code;
+        const is2FAEnabled = responseStatus === 403;
 
         if (is2FAEnabled) {
             yield put(signInRequire2FA({ require2fa: true }));
