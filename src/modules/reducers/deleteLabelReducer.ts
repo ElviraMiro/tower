@@ -19,6 +19,7 @@ export const deleteLabelReducer = (state = initial, action: DeleteLabelAction) =
           return {
               ...state,
               labelDeleted: true,
+              error: undefined,
           };
       case DELETE_USER_LABEL_ERROR:
           return {

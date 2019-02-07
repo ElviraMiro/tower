@@ -7,6 +7,7 @@ import {
 import { RouteProps } from 'react-router';
 import {
     Layout,
+    MessageAlert,
     UserData,
 } from '../../components';
 import {
@@ -20,10 +21,23 @@ import {
     getUserData,
     logout,
     selectUserData,
+    selectAddLabelError,
+    selectDeleteLabelError,
+    selectEditLabelError,
+    selectOTPError,
+    selectRoleError,
+    selectStateError,
 } from '../../modules';
+import { select } from 'redux-saga/effects';
 
 interface ReduxProps {
     userData: any;
+    errorAddLabel?: string;
+    errorDeleteLabel?: string;
+    errorEditLabel?: string;
+    errorOTP?: string;
+    errorRole?: string;
+    errorState?: string;
 }
 
 interface DispatchProps {
@@ -47,6 +61,8 @@ interface UserInfoState {
     nameLabel: string;
     valueLabel: string;
     scopeLabel: string;
+    error: string;
+    showMessage: boolean;
 }
 
 type Props = ReduxProps & DispatchProps & RouteProps & OwnProps;
@@ -61,11 +77,22 @@ class UserInfoScreen extends React.Component<Props, UserInfoState> {
             nameLabel: '',
             valueLabel: '',
             scopeLabel: 'public',
+            error: '',
+            showMessage: false,
         };
     }
 
     public componentDidMount() {
         this.props.getUserData({uid: this.props.match.params.uid});
+    }
+
+    public componentWillReceiveProps(next: Props) {
+        this.setError(next.errorAddLabel, this.props.errorAddLabel);
+        this.setError(next.errorEditLabel, this.props.errorEditLabel);
+        this.setError(next.errorDeleteLabel, this.props.errorDeleteLabel);
+        this.setError(next.errorOTP, this.props.errorOTP);
+        this.setError(next.errorRole, this.props.errorRole);
+        this.setError(next.errorState, this.props.errorState);
     }
 
     public render() {
@@ -75,6 +102,8 @@ class UserInfoScreen extends React.Component<Props, UserInfoState> {
             nameLabel,
             valueLabel,
             scopeLabel,
+            error,
+            showMessage,
         } = this.state;
 
         return (
@@ -102,6 +131,11 @@ class UserInfoScreen extends React.Component<Props, UserInfoState> {
                         />
                     ) : 'Loading'
                 }
+                <MessageAlert
+                    type="error"
+                    contentText={error}
+                    showDialog={showMessage}
+                />
             </Layout>
         );
     }
@@ -199,11 +233,32 @@ class UserInfoScreen extends React.Component<Props, UserInfoState> {
         const { uid } = this.props.userData;
         this.props.changeUserOTP({uid: uid, otp: value});
     };
+
+    private setError(newProp: string | undefined, oldProp: string | undefined) {
+        if (newProp && (!oldProp)) {
+            this.setState({
+                error: newProp,
+                showMessage: true,
+            });
+            setTimeout(() => {
+                this.setState({
+                    showMessage: false,
+                })
+            }, 2000);
+        }
+    };
 }
 
 const mapStateToProps: MapStateToProps<ReduxProps, {}, AppState> =
     (state: AppState): ReduxProps => ({
         userData: selectUserData(state),
+        errorAddLabel: selectAddLabelError(state),
+        errorDeleteLabel: selectDeleteLabelError(state),
+        errorEditLabel: selectEditLabelError(state),
+        errorOTP: selectOTPError(state),
+        errorRole: selectRoleError(state),
+        errorState: selectStateError(state),
+        
     });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =

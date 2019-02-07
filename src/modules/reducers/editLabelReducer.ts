@@ -19,6 +19,7 @@ export const editLabelReducer = (state = initial, action: EditLabelAction) => {
           return {
               ...state,
               labelEdited: true,
+              error: undefined,
           };
       case EDIT_USER_LABEL_ERROR:
           return {

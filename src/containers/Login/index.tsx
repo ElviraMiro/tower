@@ -97,6 +97,7 @@ class LoginScreen extends React.Component<Props, LoginState> {
                     <MessageAlert
                         showDialog={authError ? true : false}
                         contentText={authError}
+                        type="error"
                     />
                 </Paper>
             </main>

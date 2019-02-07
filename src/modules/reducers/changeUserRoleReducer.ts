@@ -19,6 +19,7 @@ export const changeUserRoleReducer = (role = initial, action: ChangeUserRoleActi
           return {
               ...role,
               roleChanged: true,
+              error: undefined,
           };
       case CHANGE_USER_ROLE_ERROR:
           return {
