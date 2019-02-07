@@ -12,11 +12,12 @@ import {
     MapDispatchToPropsFunction,
     MapStateToProps,
 } from 'react-redux';
-import { LoginBox } from '../../components';
+import { LoginBox, MessageAlert } from '../../components';
 import {
     AppState,
     login,
     selectSignInRequire2FA,
+    selectAuthSignedInError,
 } from '../../modules';
 
 const styles = (theme: Theme) => createStyles({
@@ -46,12 +47,14 @@ interface StyleProps extends WithStyles<typeof styles> {
 
 interface ReduxProps {
     require2fa?: boolean;
+    authError?: string;
 }
 
 interface LoginState {
     email: string;
     password: string;
     otp_code: string;
+    showError: boolean;
 }
 
 interface DispatchProps {
@@ -68,13 +71,15 @@ class LoginScreen extends React.Component<Props, LoginState> {
             email: '',
             password: '',
             otp_code: '',
+            showError: false,
         };
     }
 
     public render() {
         const { classes } = this.props;
-        const { email, password } = this.state;
+        const { email, password, showError } = this.state;
         const require2FA = this.props.require2fa;
+        const authError = this.props.authError;
 
         return (
             <main className={classes.main}>
@@ -88,6 +93,10 @@ class LoginScreen extends React.Component<Props, LoginState> {
                         handleOTPCode={this.handleChangeOTPCodeValue}
                         handleSignIn={this.signIn}
                         require2FA={require2FA}
+                    />
+                    <MessageAlert
+                        showDialog={authError ? true : false}
+                        contentText={authError}
                     />
                 </Paper>
             </main>
@@ -121,6 +130,7 @@ class LoginScreen extends React.Component<Props, LoginState> {
 const mapStateToProps: MapStateToProps<ReduxProps, {}, AppState> =
     (state: AppState): ReduxProps => ({
         require2fa: selectSignInRequire2FA(state),
+        authError: selectAuthSignedInError(state),
     });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<DispatchProps, {}> =

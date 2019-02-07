@@ -5,3 +5,4 @@ export * from './OrderChart';
 export * from './EnchancedTable';
 export * from './UserData';
 export * from './EditLabelModal';
+export * from './MessageAlert';

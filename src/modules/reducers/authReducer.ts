@@ -30,6 +30,7 @@ export const authReducer = (state = {}, action: AuthAction) => {
         case LOGIN_FETCH:
             return {
                 ...state,
+                error: null,
             };
         case LOGIN_DATA:
             return {
