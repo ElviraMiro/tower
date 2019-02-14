@@ -1,28 +1,22 @@
 import {
-  AddNewLabelState,
-  AppState,
-  ChangeUserOTPState,
-  ChangeUserRoleState,
-  ChangeUserStateState,
-  DeleteLabelState,
-  EditLabelState,
+    AppState,
 
 } from '../reducers';
 
-export const selectAddLabelError = (state: AppState): AddNewLabelState['error'] =>
-  state.addNewLabel.error;
+export const selectAddLabelError = (state: AppState): string | undefined =>
+    state.addNewLabel.error;
 
-export const selectEditLabelError = (state: AppState): EditLabelState['error'] =>
-  state.editLabel.error;
+export const selectEditLabelError = (state: AppState): string | undefined =>
+    state.editLabel.error;
 
-export const selectDeleteLabelError = (state: AppState): DeleteLabelState['error'] =>
-  state.deleteLabel.error;
+export const selectDeleteLabelError = (state: AppState): string | undefined =>
+    state.deleteLabel.error;
 
-export const selectOTPError = (state: AppState): ChangeUserOTPState['error'] =>
-  state.userOTP.error;
+export const selectOTPError = (state: AppState): string | undefined =>
+    state.userOTP.error;
 
-export const selectRoleError = (state: AppState): ChangeUserRoleState['error'] =>
-  state.userRole.error;
+export const selectRoleError = (state: AppState): string | undefined =>
+    state.userRole.error;
 
-export const selectStateError = (state: AppState): ChangeUserStateState['error'] =>
-  state.userState.error;
+export const selectStateError = (state: AppState): string | undefined =>
+    state.userState.error;
