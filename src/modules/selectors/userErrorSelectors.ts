@@ -1,7 +1,4 @@
-import {
-    AppState,
-
-} from '../reducers';
+import { AppState } from '../reducers';
 
 export const selectAddLabelError = (state: AppState): string | undefined =>
     state.addNewLabel.error;
