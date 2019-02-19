@@ -82,9 +82,13 @@ interface OwnProps {
 type Props = StyleProps & OwnProps;
 
 class MessageAlertComponent extends React.Component<Props> {
-    state = {
-        open: this.props.showDialog,
-    };
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            open: this.props.showDialog,
+        };
+    }
 
     componentWillReceiveProps(next: Props) {
         if (next.showDialog && (!this.props.showDialog)) {
