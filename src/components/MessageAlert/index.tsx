@@ -98,8 +98,8 @@ class MessageAlertComponent extends React.Component<Props> {
 
     render() {
         const { classes, type } = this.props;
-        const contentText = this.props.contentText ? this.props.contentText : '';
-        const timeout = this.props.timeout ? this.props.timeout : 2000;
+        const contentText = this.props.contentText || '';
+        const timeout = this.props.timeout || 2000;
         const className = getClassName(classes, type);
         return (
             <Snackbar
